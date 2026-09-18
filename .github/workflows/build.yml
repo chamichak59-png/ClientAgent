@@ -18,19 +18,9 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
-    - name: Set up Android SDK
-      uses: android-actions/setup-android@v3
-
-    - name: Accept Android SDK licenses
-      run: |
-        yes | sdkmanager --licenses || true
-
-    - name: Create local.properties
+    - name: Create local.properties & build files
       run: |
         echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
-
-    - name: Create minimal build.gradle
-      run: |
         echo "plugins { id 'com.android.application' version '8.1.1' apply false }" > build.gradle
         echo "allprojects { repositories { google(); mavenCentral() } }" > settings.gradle
         mkdir -p app

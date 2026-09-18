@@ -22,7 +22,24 @@ jobs:
       run: |
         echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
         echo "plugins { id 'com.android.application' version '8.1.1' apply false }" > build.gradle
-        echo "allprojects { repositories { google(); mavenCentral() } }" > settings.gradle
+        cat << 'EOF' > settings.gradle
+        pluginManagement {
+            repositories {
+                google()
+                mavenCentral()
+                gradlePluginPortal()
+            }
+        }
+        dependencyResolutionManagement {
+            repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+            repositories {
+                google()
+                mavenCentral()
+            }
+        }
+        rootProject.name = "ClientAgent"
+        include ':app'
+        EOF
         mkdir -p app
         cat << 'EOF' > app/build.gradle
         plugins { id 'com.android.application' }
